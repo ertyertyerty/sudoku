@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from itertools import combinations
 
 def uniqueQuadCellRow(cell,y_quad,unique_set):
@@ -272,27 +274,22 @@ while loop < 20:
     print("Changes = " + str(changes) + " and level = " + str(level))
     print("Adding in next level of logic")
   if (level == 2):
-    #for i in range(16):
-      #print("Row "+str(i+1)+": "+str(Matrix[i])) 
     for y in range(16):
-      #print("\nRow "+str(y+1)+": "+str(Matrix[y])) 
       quad_set = [set(), set(), set(), set()]
       for quad in range(4):
         for x in range(quad*4,(quad+1)*4):
           if (len(Matrix[y][x]) > 0):
             for z in Matrix[y][x]:
               quad_set[quad].add(z)
-      if (quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
-        uniqueQuadRow(y,0,(quad_set[0]-quad_set[1]-quad_set[2]-quad_set[3]))
-      if (quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
-        uniqueQuadRow(y,1,(quad_set[1]-quad_set[0]-quad_set[2]-quad_set[3]))
-      if (quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
-        uniqueQuadRow(y,2,(quad_set[2]-quad_set[0]-quad_set[1]-quad_set[3]))
-      if (quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
-        uniqueQuadRow(y,3,(quad_set[3]-quad_set[0]-quad_set[1]-quad_set[2]))
+      if (unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+        uniqueQuadRow(y,0,unique_set)
+      if (unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+        uniqueQuadRow(y,1,unique_set)
+      if (unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+        uniqueQuadRow(y,2,unique_set)
+      if (unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+        uniqueQuadRow(y,3,unique_set)
 
-    #for i in range(16):
-      #print("Row "+str(i+1)+": "+str(Matrix[i])) 
     for x in range(16):
       quad_set = [set(), set(), set(), set()]
       for quad in range(4):
@@ -300,14 +297,14 @@ while loop < 20:
           if (len(Matrix[y][x]) > 0):
             for z in Matrix[y][x]:
               quad_set[quad].add(z)
-      if (quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
-        uniqueQuadCol(x,0,(quad_set[0]-quad_set[1]-quad_set[2]-quad_set[3]))
-      if (quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
-        uniqueQuadCol(x,1,(quad_set[1]-quad_set[0]-quad_set[2]-quad_set[3]))
-      if (quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
-        uniqueQuadCol(x,2,(quad_set[2]-quad_set[0]-quad_set[1]-quad_set[3]))
-      if (quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
-        uniqueQuadCol(x,3,(quad_set[3]-quad_set[0]-quad_set[1]-quad_set[2]))
+      if (unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+        uniqueQuadCol(x,0,unique_set)
+      if (unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+        uniqueQuadCol(x,1,unique_set)
+      if (unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+        uniqueQuadCol(x,2,unique_set)
+      if (unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+        uniqueQuadCol(x,3,unique_set)
 
     for cell in range(16):
       first_row = (cell // 4) * 4
@@ -319,14 +316,14 @@ while loop < 20:
           for z in Matrix[y][x]:
             quad_set[quad].add(z)
         quad += 1
-      if (quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
-        uniqueQuadCellRow(cell,0,(quad_set[0]-quad_set[1]-quad_set[2]-quad_set[3]))
-      if (quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
-        uniqueQuadCellRow(cell,1,(quad_set[1]-quad_set[0]-quad_set[2]-quad_set[3]))
-      if (quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
-        uniqueQuadCellRow(cell,2,(quad_set[2]-quad_set[0]-quad_set[1]-quad_set[3]))
-      if (quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
-        uniqueQuadCellRow(cell,3,(quad_set[3]-quad_set[0]-quad_set[1]-quad_set[2]))
+      if (unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+        uniqueQuadCellRow(cell,0,unique_set)
+      if (unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+        uniqueQuadCellRow(cell,1,unique_set)
+      if (unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+        uniqueQuadCellRow(cell,2,unique_set)
+      if (unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+        uniqueQuadCellRow(cell,3,unique_set)
           
     for cell in range(16):
       first_row = (cell // 4) * 4
@@ -338,14 +335,14 @@ while loop < 20:
           for z in Matrix[y][x]:
             quad_set[quad].add(z)
         quad += 1
-      if (quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
-        uniqueQuadCellCol(cell,0,(quad_set[0]-quad_set[1]-quad_set[2]-quad_set[3]))
-      if (quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
-        uniqueQuadCellCol(cell,1,(quad_set[1]-quad_set[0]-quad_set[2]-quad_set[3]))
-      if (quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
-        uniqueQuadCellCol(cell,2,(quad_set[2]-quad_set[0]-quad_set[1]-quad_set[3]))
-      if (quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
-        uniqueQuadCellCol(cell,3,(quad_set[3]-quad_set[0]-quad_set[1]-quad_set[2]))
+      if (unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+        uniqueQuadCellCol(cell,0,unique_set)
+      if (unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+        uniqueQuadCellCol(cell,1,unique_set)
+      if (unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+        uniqueQuadCellCol(cell,2,unique_set)
+      if (unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+        uniqueQuadCellCol(cell,3,unique_set)
           
     for y in range(16):
       row_set = [set(),set(),set(),set(),set(),set(),set(),set(
