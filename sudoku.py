@@ -1,37 +1,37 @@
 from itertools import combinations
 
-def uniqueTrioCellRow(cell,y_trio,unique_set):
+def uniqueQuadCellRow(cell,y_quad,unique_set):
 
   global changes
-  y = (cell // 4) * 4 + y_trio
-  x_trio = cell % 4
-  for trio in range(4):
-    if (trio != x_trio):
-      for x in range(trio*4, (trio*4)+4):
+  y = (cell // 4) * 4 + y_quad
+  x_quad = cell % 4
+  for quad in range(4):
+    if (quad != x_quad):
+      for x in range(quad*4, (quad*4)+4):
         for i in unique_set:
           if i in Matrix[y][x]:
             Matrix[y][x].remove(i)
             changes += 1
-            print("TrioCellRow-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
+            print("QuadCellRow-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
 
-def uniqueTrioCellCol(cell,x_trio,unique_set):
+def uniqueQuadCellCol(cell,x_quad,unique_set):
 
   global changes
-  x = (cell % 4) * 4 + x_trio
-  y_trio = cell // 4
-  for trio in range(4):
-    if (trio != y_trio):
-      for y in range(trio*4, (trio*4)+4):
+  x = (cell % 4) * 4 + x_quad
+  y_quad = cell // 4
+  for quad in range(4):
+    if (quad != y_quad):
+      for y in range(quad*4, (quad*4)+4):
         for i in unique_set:
           if i in Matrix[y][x]:
             Matrix[y][x].remove(i)
             changes += 1
-            print("TrioCellCol-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
+            print("QuadCellCol-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
 
-def uniqueTrioRow(row,x_trio,unique_set):
+def uniqueQuadRow(row,x_quad,unique_set):
 
   global changes
-  cell, first_row, first_col = determineCell(row,x_trio*4)
+  cell, first_row, first_col = determineCell(row,x_quad*4)
   for y in range(first_row, first_row+4):
     if (y != row):
       for x in range(first_col, first_col+4):
@@ -39,12 +39,12 @@ def uniqueTrioRow(row,x_trio,unique_set):
           if i in Matrix[y][x]:
             Matrix[y][x].remove(i)
             changes += 1
-            print("TrioRow-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
+            print("QuadRow-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
             
-def uniqueTrioCol(col,y_trio,unique_set):
+def uniqueQuadCol(col,y_quad,unique_set):
 
   global changes
-  cell, first_row, first_col = determineCell(y_trio*4,col)
+  cell, first_row, first_col = determineCell(y_quad*4,col)
   for x in range(first_col, first_col+4):
     if (x != col):
       for y in range(first_row, first_row+4):
@@ -52,7 +52,7 @@ def uniqueTrioCol(col,y_trio,unique_set):
           if i in Matrix[y][x]:
             Matrix[y][x].remove(i)
             changes += 1
-            print("TrioCol-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
+            print("QuadCol-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
             
 def soloFound(where, y, x, z):
 
@@ -276,76 +276,76 @@ while loop < 20:
       #print("Row "+str(i+1)+": "+str(Matrix[i])) 
     for y in range(16):
       #print("\nRow "+str(y+1)+": "+str(Matrix[y])) 
-      trio_set = [set(), set(), set(), set()]
-      for trio in range(4):
-        for x in range(trio*4,(trio+1)*4):
+      quad_set = [set(), set(), set(), set()]
+      for quad in range(4):
+        for x in range(quad*4,(quad+1)*4):
           if (len(Matrix[y][x]) > 0):
             for z in Matrix[y][x]:
-              trio_set[trio].add(z)
-      if (trio_set[0] - trio_set[1] - trio_set[2] - trio_set[3]):
-        uniqueTrioRow(y,0,(trio_set[0]-trio_set[1]-trio_set[2]-trio_set[3]))
-      if (trio_set[1] - trio_set[0] - trio_set[2] - trio_set[3]):
-        uniqueTrioRow(y,1,(trio_set[1]-trio_set[0]-trio_set[2]-trio_set[3]))
-      if (trio_set[2] - trio_set[0] - trio_set[1] - trio_set[3]):
-        uniqueTrioRow(y,2,(trio_set[2]-trio_set[0]-trio_set[1]-trio_set[3]))
-      if (trio_set[3] - trio_set[0] - trio_set[1] - trio_set[2]):
-        uniqueTrioRow(y,3,(trio_set[3]-trio_set[0]-trio_set[1]-trio_set[2]))
+              quad_set[quad].add(z)
+      if (quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+        uniqueQuadRow(y,0,(quad_set[0]-quad_set[1]-quad_set[2]-quad_set[3]))
+      if (quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+        uniqueQuadRow(y,1,(quad_set[1]-quad_set[0]-quad_set[2]-quad_set[3]))
+      if (quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+        uniqueQuadRow(y,2,(quad_set[2]-quad_set[0]-quad_set[1]-quad_set[3]))
+      if (quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+        uniqueQuadRow(y,3,(quad_set[3]-quad_set[0]-quad_set[1]-quad_set[2]))
 
     #for i in range(16):
       #print("Row "+str(i+1)+": "+str(Matrix[i])) 
     for x in range(16):
-      trio_set = [set(), set(), set(), set()]
-      for trio in range(4):
-        for y in range(trio*4,(trio+1)*4):
+      quad_set = [set(), set(), set(), set()]
+      for quad in range(4):
+        for y in range(quad*4,(quad+1)*4):
           if (len(Matrix[y][x]) > 0):
             for z in Matrix[y][x]:
-              trio_set[trio].add(z)
-      if (trio_set[0] - trio_set[1] - trio_set[2] - trio_set[3]):
-        uniqueTrioCol(x,0,(trio_set[0]-trio_set[1]-trio_set[2]-trio_set[3]))
-      if (trio_set[1] - trio_set[0] - trio_set[2] - trio_set[3]):
-        uniqueTrioCol(x,1,(trio_set[1]-trio_set[0]-trio_set[2]-trio_set[3]))
-      if (trio_set[2] - trio_set[0] - trio_set[1] - trio_set[3]):
-        uniqueTrioCol(x,2,(trio_set[2]-trio_set[0]-trio_set[1]-trio_set[3]))
-      if (trio_set[3] - trio_set[0] - trio_set[1] - trio_set[2]):
-        uniqueTrioCol(x,3,(trio_set[3]-trio_set[0]-trio_set[1]-trio_set[2]))
+              quad_set[quad].add(z)
+      if (quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+        uniqueQuadCol(x,0,(quad_set[0]-quad_set[1]-quad_set[2]-quad_set[3]))
+      if (quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+        uniqueQuadCol(x,1,(quad_set[1]-quad_set[0]-quad_set[2]-quad_set[3]))
+      if (quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+        uniqueQuadCol(x,2,(quad_set[2]-quad_set[0]-quad_set[1]-quad_set[3]))
+      if (quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+        uniqueQuadCol(x,3,(quad_set[3]-quad_set[0]-quad_set[1]-quad_set[2]))
 
     for cell in range(16):
       first_row = (cell // 4) * 4
       first_col = (cell % 4) * 4
-      trio_set = [set(), set(), set(), set()]
-      trio = 0
+      quad_set = [set(), set(), set(), set()]
+      quad = 0
       for y in range(first_row, first_row+4):
         for x in range(first_col, first_col+4):
           for z in Matrix[y][x]:
-            trio_set[trio].add(z)
-        trio += 1
-      if (trio_set[0] - trio_set[1] - trio_set[2] - trio_set[3]):
-        uniqueTrioCellRow(cell,0,(trio_set[0]-trio_set[1]-trio_set[2]-trio_set[3]))
-      if (trio_set[1] - trio_set[0] - trio_set[2] - trio_set[3]):
-        uniqueTrioCellRow(cell,1,(trio_set[1]-trio_set[0]-trio_set[2]-trio_set[3]))
-      if (trio_set[2] - trio_set[0] - trio_set[1] - trio_set[3]):
-        uniqueTrioCellRow(cell,2,(trio_set[2]-trio_set[0]-trio_set[1]-trio_set[3]))
-      if (trio_set[3] - trio_set[0] - trio_set[1] - trio_set[2]):
-        uniqueTrioCellRow(cell,3,(trio_set[3]-trio_set[0]-trio_set[1]-trio_set[2]))
+            quad_set[quad].add(z)
+        quad += 1
+      if (quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+        uniqueQuadCellRow(cell,0,(quad_set[0]-quad_set[1]-quad_set[2]-quad_set[3]))
+      if (quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+        uniqueQuadCellRow(cell,1,(quad_set[1]-quad_set[0]-quad_set[2]-quad_set[3]))
+      if (quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+        uniqueQuadCellRow(cell,2,(quad_set[2]-quad_set[0]-quad_set[1]-quad_set[3]))
+      if (quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+        uniqueQuadCellRow(cell,3,(quad_set[3]-quad_set[0]-quad_set[1]-quad_set[2]))
           
     for cell in range(16):
       first_row = (cell // 4) * 4
       first_col = (cell % 4) * 4
-      trio_set = [set(), set(), set(), set()]
-      trio = 0
+      quad_set = [set(), set(), set(), set()]
+      quad = 0
       for x in range(first_col, first_col+4):
         for y in range(first_row, first_row+4):
           for z in Matrix[y][x]:
-            trio_set[trio].add(z)
-        trio += 1
-      if (trio_set[0] - trio_set[1] - trio_set[2] - trio_set[3]):
-        uniqueTrioCellCol(cell,0,(trio_set[0]-trio_set[1]-trio_set[2]-trio_set[3]))
-      if (trio_set[1] - trio_set[0] - trio_set[2] - trio_set[3]):
-        uniqueTrioCellCol(cell,1,(trio_set[1]-trio_set[0]-trio_set[2]-trio_set[3]))
-      if (trio_set[2] - trio_set[0] - trio_set[1] - trio_set[3]):
-        uniqueTrioCellCol(cell,2,(trio_set[2]-trio_set[0]-trio_set[1]-trio_set[3]))
-      if (trio_set[3] - trio_set[0] - trio_set[1] - trio_set[2]):
-        uniqueTrioCellCol(cell,3,(trio_set[3]-trio_set[0]-trio_set[1]-trio_set[2]))
+            quad_set[quad].add(z)
+        quad += 1
+      if (quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+        uniqueQuadCellCol(cell,0,(quad_set[0]-quad_set[1]-quad_set[2]-quad_set[3]))
+      if (quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+        uniqueQuadCellCol(cell,1,(quad_set[1]-quad_set[0]-quad_set[2]-quad_set[3]))
+      if (quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+        uniqueQuadCellCol(cell,2,(quad_set[2]-quad_set[0]-quad_set[1]-quad_set[3]))
+      if (quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+        uniqueQuadCellCol(cell,3,(quad_set[3]-quad_set[0]-quad_set[1]-quad_set[2]))
           
     for y in range(16):
       row_set = [set(),set(),set(),set(),set(),set(),set(),set(
