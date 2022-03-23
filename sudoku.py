@@ -2,6 +2,110 @@
 
 from itertools import combinations
 
+def sampleToughPuzzle():
+
+  soloFound("INITIALIZATION", 0, 4, 'C')
+  soloFound("INITIALIZATION", 0, 11, 'G')
+  soloFound("INITIALIZATION", 0, 14, 'B')
+  soloFound("INITIALIZATION", 1, 0, '1')
+  soloFound("INITIALIZATION", 1, 2, '3')
+  soloFound("INITIALIZATION", 1, 3, 'E')
+  soloFound("INITIALIZATION", 1, 4, 'B')
+  soloFound("INITIALIZATION", 1, 5, '6')
+  soloFound("INITIALIZATION", 1, 12, '2')
+  soloFound("INITIALIZATION", 1, 13, '4')
+  soloFound("INITIALIZATION", 1, 14, 'A')
+  soloFound("INITIALIZATION", 2, 1, 'C')
+  soloFound("INITIALIZATION", 2, 2, 'A')
+  soloFound("INITIALIZATION", 2, 3, 'D')
+  soloFound("INITIALIZATION", 2, 6, '2')
+  soloFound("INITIALIZATION", 2, 12, '3')
+  soloFound("INITIALIZATION", 3, 0, '2')
+  soloFound("INITIALIZATION", 3, 4, '1')
+  soloFound("INITIALIZATION", 3, 6, '5')
+  soloFound("INITIALIZATION", 3, 7, 'F')
+  soloFound("INITIALIZATION", 3, 9, '6')
+  soloFound("INITIALIZATION", 3, 10, 'A')
+  soloFound("INITIALIZATION", 3, 11, 'B')
+  soloFound("INITIALIZATION", 4, 1, 'D')
+  soloFound("INITIALIZATION", 4, 3, '8')
+  soloFound("INITIALIZATION", 4, 4, 'G')
+  soloFound("INITIALIZATION", 4, 5, '7')
+  soloFound("INITIALIZATION", 4, 6, 'C')
+  soloFound("INITIALIZATION", 4, 9, 'E')
+  soloFound("INITIALIZATION", 4, 13, '9')
+  soloFound("INITIALIZATION", 4, 14, 'F')
+  soloFound("INITIALIZATION", 5, 7, '2')
+  soloFound("INITIALIZATION", 5, 10, '4')
+  soloFound("INITIALIZATION", 5, 12, 'E')
+  soloFound("INITIALIZATION", 6, 2, '4')
+  soloFound("INITIALIZATION", 6, 3, '5')
+  soloFound("INITIALIZATION", 6, 5, '8')
+  soloFound("INITIALIZATION", 6, 6, 'E')
+  soloFound("INITIALIZATION", 6, 8, 'G')
+  soloFound("INITIALIZATION", 6, 10, '1')
+  soloFound("INITIALIZATION", 6, 11, '9')
+  soloFound("INITIALIZATION", 6, 13, '3')
+  soloFound("INITIALIZATION", 6, 14, '6')
+  soloFound("INITIALIZATION", 7, 3, 'F')
+  soloFound("INITIALIZATION", 7, 4, 'D')
+  soloFound("INITIALIZATION", 7, 5, '5')
+  soloFound("INITIALIZATION", 7, 7, '3')
+  soloFound("INITIALIZATION", 7, 8, 'A')
+  soloFound("INITIALIZATION", 7, 9, 'C')
+  soloFound("INITIALIZATION", 8, 0, '5')
+  soloFound("INITIALIZATION", 8, 3, 'A')
+  soloFound("INITIALIZATION", 8, 5, 'F')
+  soloFound("INITIALIZATION", 8, 6, '8')
+  soloFound("INITIALIZATION", 8, 9, 'D')
+  soloFound("INITIALIZATION", 8, 15, '4')
+  soloFound("INITIALIZATION", 9, 3, '1')
+  soloFound("INITIALIZATION", 9, 4, '3')
+  soloFound("INITIALIZATION", 9, 6, 'A')
+  soloFound("INITIALIZATION", 9, 8, 'B')
+  soloFound("INITIALIZATION", 9, 9, '5')
+  soloFound("INITIALIZATION", 9, 10, '7')
+  soloFound("INITIALIZATION", 9, 13, 'D')
+  soloFound("INITIALIZATION", 10, 0, '9')
+  soloFound("INITIALIZATION", 10, 1, '4')
+  soloFound("INITIALIZATION", 10, 2, '8')
+  soloFound("INITIALIZATION", 10, 3, 'B')
+  soloFound("INITIALIZATION", 10, 4, '2')
+  soloFound("INITIALIZATION", 10, 11, 'F')
+  soloFound("INITIALIZATION", 10, 13, '5')
+  soloFound("INITIALIZATION", 10, 15, '1')
+  soloFound("INITIALIZATION", 11, 4, '7')
+  soloFound("INITIALIZATION", 11, 5, 'G')
+  soloFound("INITIALIZATION", 11, 13, '8')
+  soloFound("INITIALIZATION", 11, 15, '9')
+  soloFound("INITIALIZATION", 12, 1, 'F')
+  soloFound("INITIALIZATION", 12, 8, 'C')
+  soloFound("INITIALIZATION", 12, 9, '2')
+  soloFound("INITIALIZATION", 13, 1, '6')
+  soloFound("INITIALIZATION", 13, 5, 'B')
+  soloFound("INITIALIZATION", 13, 6, 'G')
+  soloFound("INITIALIZATION", 13, 9, '7')
+  soloFound("INITIALIZATION", 13, 12, 'D')
+  soloFound("INITIALIZATION", 13, 15, '3')
+  soloFound("INITIALIZATION", 14, 1, 'E')
+  soloFound("INITIALIZATION", 14, 3, 'C')
+  soloFound("INITIALIZATION", 14, 11, '5')
+  soloFound("INITIALIZATION", 14, 12, 'G')
+  soloFound("INITIALIZATION", 14, 13, '7')
+  soloFound("INITIALIZATION", 14, 14, '2')
+  soloFound("INITIALIZATION", 15, 7, '1')
+  soloFound("INITIALIZATION", 15, 8, '8')
+  soloFound("INITIALIZATION", 15, 14, '9')
+  soloFound("INITIALIZATION", 15, 15, 'C')
+
+def getMaxColumnWidth(tmpMatrix):
+
+  width = [1 for z in range(16)]
+  for i in range(16):
+    for j in range(16):
+      width[i] = max(width[i], len(tmpMatrix[j][i]))
+  return width
+
 def uniqueQuadCellRow(cell,y_quad,unique_set):
 
   global changes
@@ -66,9 +170,15 @@ def soloFound(where, y, x, z):
 def checkNotFoundVariables():
 
   global changes
-  not_found_row = [list(range(1,17)) for i in range(16)]
-  not_found_col = [list(range(1,17)) for i in range(16)]
-  not_found_cell = [list(range(1,17)) for i in range(16)]
+  not_found_row = [list() for i in range(16)]
+  not_found_col = [list() for i in range(16)]
+  not_found_cell = [list() for i in range(16)]
+  alpha_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
+  for alpha in alpha_set:
+    for i in range(16):
+      not_found_row[i].append(alpha)
+      not_found_col[i].append(alpha)
+      not_found_cell[i].append(alpha)
   for y in range(16):
     for x in range(16):
       if (len(Matrix[y][x]) == 1):
@@ -173,7 +283,8 @@ def searchCubeForSolo(cell):
 
 def searchRowForSingle(y):
 
-  for z in range(1,17):
+  full_set = [1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G']
+  for z in full_set:
     count = 0
     for x in range(16):
       if (z in Matrix[y][x]):
@@ -184,7 +295,8 @@ def searchRowForSingle(y):
 
 def searchColForSingle(x):
 
-  for z in range(1,17):
+  full_set = [1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G']
+  for z in full_set:
     count = 0
     for y in range(16):
       if (z in Matrix[y][x]):
@@ -197,7 +309,8 @@ def searchCubeForSingle(cell):
 
   first_row = (cell // 4) * 4
   first_col = (cell % 4) * 4
-  for z in range(1,17):
+  full_set = [1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G']
+  for z in full_set:
     count = 0
     for y in range(first_row, first_row+4):
       for x in range(first_col, first_col+4):
@@ -208,34 +321,49 @@ def searchCubeForSingle(cell):
     if (count == 1):
       soloFound("cell", y_found, x_found, z)
 
-Matrix = [[list(range(1,17)) for x in range(16)] for y in range(16)]
+# START OF MAIN PROGRAM
+
+Matrix = [[list() for x in range(16)] for y in range(16)]
+alpha_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
+for alpha in alpha_set:
+  for y in range(16):
+    for x in range(16):
+      Matrix[y][x].append(alpha)
 found_row = [[] for i in range(16)]
 found_col = [[] for i in range(16)]
 found_cell = [[] for i in range(16)]
-not_found_row = [list(range(1,17)) for i in range(16)]
-not_found_col = [list(range(1,17)) for i in range(16)]
-not_found_cell = [list(range(1,17)) for i in range(16)]
+not_found_row = [[] for i in range(16)]
+not_found_col = [[] for i in range(16)]
+not_found_cell = [[] for i in range(16)]
+for alpha in alpha_set:
+  for i in range(16):
+    not_found_row[i].append(alpha)
+    not_found_col[i].append(alpha)
+    not_found_cell[i].append(alpha)
 search_set = []
 changes = 0
+"""
 for y in range(16):
   for x in range(16):
-    value = str(input("Value for " + str(y+1) + "," + str(x+1) + ": "))
+    value = str(input("Value (1-9,a-g) for " + str(y+1) + "," + str(x+1) + ": "))
     if (value.isdigit() and (int(value) in range(1,10))):
-      soloFound("INITIALIZATION", y, x, int(value))
+      soloFound("INITIALIZATION", y, x, str(value))
     elif (value == "a"):
-      soloFound("INITIALIZATION", y, x, int(10))
+      soloFound("INITIALIZATION", y, x, 'A')
     elif (value == "b"):
-      soloFound("INITIALIZATION", y, x, int(11))
+      soloFound("INITIALIZATION", y, x, 'B')
     elif (value == "c"):
-      soloFound("INITIALIZATION", y, x, int(12))
+      soloFound("INITIALIZATION", y, x, 'C')
     elif (value == "d"):
-      soloFound("INITIALIZATION", y, x, int(13))
+      soloFound("INITIALIZATION", y, x, 'D')
     elif (value == "e"):
-      soloFound("INITIALIZATION", y, x, int(14))
+      soloFound("INITIALIZATION", y, x, 'E')
     elif (value == "f"):
-      soloFound("INITIALIZATION", y, x, int(15))
+      soloFound("INITIALIZATION", y, x, 'F')
     elif (value == "g"):
-      soloFound("INITIALIZATION", y, x, int(16))
+      soloFound("INITIALIZATION", y, x, 'G')
+"""
+sampleToughPuzzle()
 
 level = 1
 loop = 1
@@ -244,20 +372,47 @@ while loop < 20:
   changes = 0
   rows_done = 0
   print("Loop #" + str(loop))
+  max_width = getMaxColumnWidth(Matrix)
   for i in range(16):
-    print("Row "+str(i+1)+": "+str(Matrix[i])) 
+    if not i%4:
+      line_length = sum(max_width) * 2 + 38
+      print("        " + "-"*line_length)
+    print("Row %2s: || " % (str(i+1)), end='') 
+    for j in range(16):
+      col_max = int(max_width[j]) * 2 - 1
+      if (j+1) % 4:
+        print("{:^{w}}".format(','.join(Matrix[i][j]), w=col_max), end = ' | ')
+      else:
+        print("{:^{w}}".format(','.join(Matrix[i][j]), w=col_max), end = ' || ')
+    print()
     found_row[i].sort()
     found_col[i].sort()
     found_cell[i].sort()
     if (len(found_row[i]) == 16):
       rows_done += 1
+  print("        " + "-"*line_length)
   print("ROWS DONE: " + str(rows_done))
   if (rows_done == 16):
     loop = 100
     break
-  print("Found row " + str(found_row))
-  print("Found col " + str(found_col))
-  print("Found cell " + str(found_cell))
+  #nonot_found_row, nonot_found_col, nonot_found_cell = checkNotFoundVariables()
+  for i in range(16):
+    print("Row %3d - Found: " %(i+1) + ','.join(found_row[i]), end = ' === ')
+    nonot_found = list(set(alpha_set) - set(found_row[i]))
+    nonot_found.sort()
+    print("Not Found: " + ','.join(nonot_found))
+  for i in range(16):
+    print("Col %3d - Found: " %(i+1) + ','.join(found_col[i]), end = ' === ')
+    nonot_found = list(set(alpha_set) - set(found_col[i]))
+    nonot_found.sort()
+    print("Not Found: " + ','.join(nonot_found))
+  for i in range(16):
+    print("Cell %2d - Found: " %(i+1) + ','.join(found_cell[i]), end = ' === ')
+    nonot_found = list(set(alpha_set) - set(found_cell[i]))
+    nonot_found.sort()
+    print("Not Found: " + ','.join(nonot_found))
+  #print("Found col " + str(found_col))
+  #print("Found cell " + str(found_cell))
 
   for y in range(16):
     searchRowForSolo(y)
