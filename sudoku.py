@@ -170,9 +170,9 @@ def soloFound(where, y, x, z):
 def checkNotFoundVariables():
 
   global changes
-  not_found_row = [list() for i in range(16)]
-  not_found_col = [list() for i in range(16)]
-  not_found_cell = [list() for i in range(16)]
+  not_found_row = [[] for i in range(16)]
+  not_found_col = [[] for i in range(16)]
+  not_found_cell = [[] for i in range(16)]
   alpha_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
   for alpha in alpha_set:
     for i in range(16):
@@ -283,7 +283,7 @@ def searchCubeForSolo(cell):
 
 def searchRowForSingle(y):
 
-  full_set = [1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G']
+  full_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
   for z in full_set:
     count = 0
     for x in range(16):
@@ -295,7 +295,7 @@ def searchRowForSingle(y):
 
 def searchColForSingle(x):
 
-  full_set = [1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G']
+  full_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
   for z in full_set:
     count = 0
     for y in range(16):
@@ -309,7 +309,7 @@ def searchCubeForSingle(cell):
 
   first_row = (cell // 4) * 4
   first_col = (cell % 4) * 4
-  full_set = [1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G']
+  full_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
   for z in full_set:
     count = 0
     for y in range(first_row, first_row+4):
@@ -323,7 +323,7 @@ def searchCubeForSingle(cell):
 
 # START OF MAIN PROGRAM
 
-Matrix = [[list() for x in range(16)] for y in range(16)]
+Matrix = [[[] for x in range(16)] for y in range(16)]
 alpha_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
 for alpha in alpha_set:
   for y in range(16):
@@ -395,7 +395,6 @@ while loop < 20:
   if (rows_done == 16):
     loop = 100
     break
-  #nonot_found_row, nonot_found_col, nonot_found_cell = checkNotFoundVariables()
   for i in range(16):
     print("Row %3d - Found: " %(i+1) + ','.join(found_row[i]), end = ' === ')
     nonot_found = list(set(alpha_set) - set(found_row[i]))
@@ -411,8 +410,6 @@ while loop < 20:
     nonot_found = list(set(alpha_set) - set(found_cell[i]))
     nonot_found.sort()
     print("Not Found: " + ','.join(nonot_found))
-  #print("Found col " + str(found_col))
-  #print("Found cell " + str(found_cell))
 
   for y in range(16):
     searchRowForSolo(y)
