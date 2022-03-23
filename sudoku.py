@@ -120,10 +120,10 @@ def uniqueQuadCol(col,y_quad,unique_set):
             
 def soloFound(where, y, x, z):
 
-  if (z in "abcdefg"):
+  if z in "abcdefg":
     if len(z) == 1:
       z = z.capitalize()
-  if (z in "123456789ABCDEFG") and (len(z) == 1):
+  if z in "123456789ABCDEFG" and len(z) == 1:
     z = str(z)
     Matrix[y][x] = [z]
     clearRow(y,x,z)
@@ -170,7 +170,7 @@ def clearRow(y,x,z):
     changes += 1
     print("clearRow-Removing " +str(z)+" from not_found_row["+str(y+1)+"]")
   for i in range(16):
-    if ((z in Matrix[y][i]) and (i != x)):
+    if z in Matrix[y][i] and i != x:
       Matrix[y][i].remove(z)
       changes += 1
       print("clearRow-Removing " +str(z)+" from: "+str(y+1)+","+str(i+1))
@@ -187,7 +187,7 @@ def clearCol(y,x,z):
     changes += 1
     print("clearCol-Removing " +str(z)+" from not_found_col["+str(x+1)+"]")
   for i in range(16):
-    if ((z in Matrix[i][x]) and (i != y)):
+    if z in Matrix[i][x] and i != y:
       Matrix[i][x].remove(z)
       changes += 1
       print("clearCol-Removing " +str(z)+" from: "+str(i+1)+","+str(x+1))
@@ -208,7 +208,7 @@ def clearCube(y1,x1,z):
           )+" for: "+str(y1+1)+","+str(x1+1))
   for y in range(first_row, first_row+4):
     for x in range(first_col, first_col+4):
-      if ((z in Matrix[y][x]) and (x != x1) and (y != y1)):
+      if z in Matrix[y][x] and x != x1 and y != y1:
         Matrix[y][x].remove(z)
         changes += 1
         print("clearCube-Removing " +str(z)+" from: "+str(y+1)+","+str(x+1))
@@ -223,14 +223,14 @@ def determineCell(y,x):
 def searchRowForSolo(y):
 
   for x in range(16):
-    if (len(Matrix[y][x]) == 1):
+    if len(Matrix[y][x]) == 1:
       z = Matrix[y][x][0]
       soloFound("row", y, x, z)
 
 def searchColForSolo(x):
 
   for y in range(16):
-    if (len(Matrix[y][x]) == 1):
+    if len(Matrix[y][x]) == 1:
       z = Matrix[y][x][0]
       soloFound("col", y, x, z)
 
@@ -240,7 +240,7 @@ def searchCubeForSolo(cell):
   first_col = (cell % 4) * 4
   for y in range(first_row, first_row+4):
     for x in range(first_col, first_col+4):
-      if (len(Matrix[y][x]) == 1):
+      if len(Matrix[y][x]) == 1:
         z = Matrix[y][x][0]
         soloFound("cell", y, x, z)
 
@@ -250,10 +250,10 @@ def searchRowForSingle(y):
   for z in full_set:
     count = 0
     for x in range(16):
-      if (z in Matrix[y][x]):
+      if z in Matrix[y][x]:
         count += 1
         x_found = x
-    if (count == 1):
+    if count == 1:
       soloFound("row", y, x_found, z)
 
 def searchColForSingle(x):
@@ -262,10 +262,10 @@ def searchColForSingle(x):
   for z in full_set:
     count = 0
     for y in range(16):
-      if (z in Matrix[y][x]):
+      if z in Matrix[y][x]:
         count += 1
         y_found = y
-    if (count == 1):
+    if count == 1:
       soloFound("col", y_found, x, z)
       
 def searchCubeForSingle(cell):
@@ -277,11 +277,11 @@ def searchCubeForSingle(cell):
     count = 0
     for y in range(first_row, first_row+4):
       for x in range(first_col, first_col+4):
-        if (z in Matrix[y][x]):
+        if z in Matrix[y][x]:
           count += 1
           y_found = y
           x_found = x
-    if (count == 1):
+    if count == 1:
       soloFound("cell", y_found, x_found, z)
 
 # START OF MAIN PROGRAM
@@ -317,7 +317,7 @@ changes = 0
 for y in range(16):
   for x in range(16):
     value = str(input("Value (1-9, a-g or A-G) for " + str(y+1) + "," + str(x+1) + ": "))
-    if (value in "123456789aAbBcCdDeEfFgG"):
+    if value in "123456789aAbBcCdDeEfFgG":
       soloFound("INITIALIZATION", y, x, str(value))
 """
 
@@ -349,7 +349,7 @@ while loop < 20:
     found_row[i].sort()
     found_col[i].sort()
     found_cell[i].sort()
-    if (len(found_row[i]) == 16):
+    if len(found_row[i]) == 16:
       rows_done += 1
   print("        " + "-"*line_length)
   print("ROWS DONE: " + str(rows_done))
@@ -382,7 +382,7 @@ while loop < 20:
     searchCubeForSolo(cell)
     searchCubeForSingle(cell)
 
-  if ((changes < 5) and (level == 1)):
+  if changes < 5 and level == 1:
     level = 2
     print("Changes = " + str(changes) + " and level = " + str(level))
     print("Adding in next level of logic")
@@ -391,32 +391,32 @@ while loop < 20:
       quad_set = [set(), set(), set(), set()]
       for quad in range(4):
         for x in range(quad*4,(quad+1)*4):
-          if (len(Matrix[y][x]) > 0):
+          if len(Matrix[y][x]) > 0:
             for z in Matrix[y][x]:
               quad_set[quad].add(z)
-      if (unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+      if unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]:
         uniqueQuadRow(y,0,unique_set)
-      if (unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+      if unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]:
         uniqueQuadRow(y,1,unique_set)
-      if (unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+      if unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]:
         uniqueQuadRow(y,2,unique_set)
-      if (unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+      if unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]:
         uniqueQuadRow(y,3,unique_set)
 
     for x in range(16):
       quad_set = [set(), set(), set(), set()]
       for quad in range(4):
         for y in range(quad*4,(quad+1)*4):
-          if (len(Matrix[y][x]) > 0):
+          if len(Matrix[y][x]) > 0:
             for z in Matrix[y][x]:
               quad_set[quad].add(z)
-      if (unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+      if unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]:
         uniqueQuadCol(x,0,unique_set)
-      if (unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+      if unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]:
         uniqueQuadCol(x,1,unique_set)
-      if (unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+      if unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]:
         uniqueQuadCol(x,2,unique_set)
-      if (unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+      if unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]:
         uniqueQuadCol(x,3,unique_set)
 
     for cell in range(16):
@@ -429,13 +429,13 @@ while loop < 20:
           for z in Matrix[y][x]:
             quad_set[quad].add(z)
         quad += 1
-      if (unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+      if unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]:
         uniqueQuadCellRow(cell,0,unique_set)
-      if (unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+      if unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]:
         uniqueQuadCellRow(cell,1,unique_set)
-      if (unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+      if unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]:
         uniqueQuadCellRow(cell,2,unique_set)
-      if (unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+      if unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]:
         uniqueQuadCellRow(cell,3,unique_set)
           
     for cell in range(16):
@@ -448,13 +448,13 @@ while loop < 20:
           for z in Matrix[y][x]:
             quad_set[quad].add(z)
         quad += 1
-      if (unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]):
+      if unique_set := quad_set[0] - quad_set[1] - quad_set[2] - quad_set[3]:
         uniqueQuadCellCol(cell,0,unique_set)
-      if (unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]):
+      if unique_set := quad_set[1] - quad_set[0] - quad_set[2] - quad_set[3]:
         uniqueQuadCellCol(cell,1,unique_set)
-      if (unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]):
+      if unique_set := quad_set[2] - quad_set[0] - quad_set[1] - quad_set[3]:
         uniqueQuadCellCol(cell,2,unique_set)
-      if (unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]):
+      if unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]:
         uniqueQuadCellCol(cell,3,unique_set)
           
     for y in range(16):
@@ -468,12 +468,12 @@ while loop < 20:
         for search_item in search_list:
           found = 0
           for x in range(16):
-            if ((len(row_set[x])<=size) and (not(row_set[x]-set(search_item)))):
+            if len(row_set[x])<=size and not(row_set[x]-set(search_item)):
               found += 1
           if found == size:
             for x in range(16):
-              if ((row_set[x] - set(search_item)) and (
-                   row_set[x] & set(search_item))):
+              if (row_set[x] - set(search_item)) and (
+                   row_set[x] & set(search_item)):
                 for z in search_item:
                   if z in row_set[x]:
                     row_set[x].remove(z)
@@ -494,12 +494,12 @@ while loop < 20:
         for search_item in search_list:
           found = 0
           for y in range(16):
-            if ((len(col_set[y])<=size) and (not(col_set[y]-set(search_item)))):
+            if len(col_set[y])<=size and not(col_set[y]-set(search_item)):
               found += 1
           if found == size:
             for y in range(16):
-              if ((col_set[y] - set(search_item)) and (
-                   col_set[y] & set(search_item))):
+              if (col_set[y] - set(search_item)) and (
+                   col_set[y] & set(search_item)):
                 for z in search_item:
                   if z in col_set[y]:
                     col_set[y].remove(z)
@@ -516,7 +516,7 @@ while loop < 20:
       first_col = (cell % 4) * 4
       for y in range(first_row, first_row+4):
         for x in range(first_col, first_col+4):
-          i = ((y % 4)*4 + (x % 4))
+          i = (y % 4) * 4 + (x % 4)
           cell_set[i] = set(Matrix[y][x])
       not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
       for size in range(2,8):
@@ -524,17 +524,17 @@ while loop < 20:
         for search_item in search_list:
           found = 0
           for i in range(16):
-            if ((len(cell_set[i])<=size) and (not(cell_set[i]-set(search_item)))):
+            if len(cell_set[i])<=size and not(cell_set[i]-set(search_item)):
               found += 1
           if found == size:
             for i in range(16):
-              if ((cell_set[i] - set(search_item)) and (
-                   cell_set[i] & set(search_item))):
+              if (cell_set[i] - set(search_item)) and (
+                   cell_set[i] & set(search_item)):
                 for z in search_item:
                   if z in cell_set[i]:
                     cell_set[i].remove(z)
-                    y = ((cell // 4) * 4 + (i // 4))
-                    x = ((cell % 4) * 4 + (i % 4))
+                    y = (cell // 4) * 4 + (i // 4)
+                    x = (cell % 4) * 4 + (i % 4)
                     Matrix[y][x].remove(z)
                     changes += 1
                     print("cell_set-Removing " +str(z)+" from: "+str(y+1
