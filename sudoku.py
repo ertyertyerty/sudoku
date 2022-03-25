@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from itertools import combinations
+import time
 
 def sampleToughPuzzle():
 
@@ -56,12 +57,12 @@ def sampleToughPuzzle():
       if puzzle[i][j] in "123456789aAbBcCdDeEfFgG":
         soloFound("Sample Puzzle", i, j, str(puzzle[i][j]))
 
-def getMaxColumnWidth(tmpMatrix):
+def getMaxColumnWidth():
 
   width = [1 for z in range(16)]
   for i in range(16):
     for j in range(16):
-      width[i] = max(width[i], len(tmpMatrix[j][i]))
+      width[i] = max(width[i], len(Matrix[j][i]))
   return width
 
 def uniqueQuadCellRow(cell,y_quad,unique_set):
@@ -284,7 +285,14 @@ def searchCubeForSingle(cell):
     if count == 1:
       soloFound("cell", y_found, x_found, z)
 
-# START OF MAIN PROGRAM
+###
+### START OF MAIN PROGRAM
+###
+
+###
+### Declare main variables (Matrix[][], found_row[], found_col[], found_cell[],
+###     not_found_row[], not_found_col[], not_found_cell[], changes)
+###
 
 Matrix = [[[] for x in range(16)] for y in range(16)]
 alpha_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
@@ -305,14 +313,14 @@ for alpha in alpha_set:
     not_found_cell[i].append(alpha)
 search_set = []
 changes = 0
-###
-### Use either the sample puzzle method (for debugging) or the standard
-### input method to enter your puzzle to be solved
-###
 
+###
+### Use either the sample puzzle provided (for debugging) OR the keyboard
+### puzzle input method to enter your puzzle to be solved
+###
 """
 ###
-### Standard input method (remove and use sample puzzle for debugging)
+### Keyboard puzzle input method (remove and use sample puzzle for debugging)
 ###
 for y in range(16):
   for x in range(16):
@@ -326,17 +334,27 @@ for y in range(16):
 ###
 sampleToughPuzzle()
 
-level = 1
+start = time.perf_counter()
 loop = 1
-while loop < 20:
-  print("Previous Changes = " + str(changes) + " and level = " + str(level))
+while loop < 40:
+
+###
+### Beginning of loop
+###
+  
+  print("Changes = " + str(changes))
   changes = 0
   rows_done = 0
   print("Loop #" + str(loop))
-  max_width = getMaxColumnWidth(Matrix)
+
+###
+### Print puzzle's current state in a simple grid
+###
+  
+  max_width = getMaxColumnWidth()
+  line_length = sum(max_width) * 2 + 38
   for i in range(16):
     if not i%4:
-      line_length = sum(max_width) * 2 + 38
       print("        " + "-"*line_length)
     print("Row %2s: || " % (str(i+1)), end='') 
     for j in range(16):
@@ -346,31 +364,48 @@ while loop < 20:
       else:
         print("{:^{w}}".format(','.join(Matrix[i][j]), w=col_max), end = ' || ')
     print()
-    found_row[i].sort()
-    found_col[i].sort()
-    found_cell[i].sort()
     if len(found_row[i]) == 16:
       rows_done += 1
   print("        " + "-"*line_length)
   print("ROWS DONE: " + str(rows_done))
+
+###
+### Quit program once all rows have been resolved
+###
+  
   if (rows_done == 16):
     loop = 100
+    stop = time.perf_counter()
+    print("Elapsed time: " + str(stop - start))
     break
+
+###
+### Sorting and printing resolved squares in each row, column and cell
+###
+  """
   for i in range(16):
-    print("Row %3d - Found: " %(i+1) + ','.join(found_row[i]), end = ' === ')
+    found_row[i].sort()
+    found_col[i].sort()
+    found_cell[i].sort()
     nonot_found = list(set(alpha_set) - set(found_row[i]))
     nonot_found.sort()
+    print("Row %3d - Found: " %(i+1) + ','.join(found_row[i]), end = ' === ')
     print("Not Found: " + ','.join(nonot_found))
   for i in range(16):
-    print("Col %3d - Found: " %(i+1) + ','.join(found_col[i]), end = ' === ')
     nonot_found = list(set(alpha_set) - set(found_col[i]))
     nonot_found.sort()
+    print("Col %3d - Found: " %(i+1) + ','.join(found_col[i]), end = ' === ')
     print("Not Found: " + ','.join(nonot_found))
   for i in range(16):
-    print("Cell %2d - Found: " %(i+1) + ','.join(found_cell[i]), end = ' === ')
     nonot_found = list(set(alpha_set) - set(found_cell[i]))
     nonot_found.sort()
+    print("Cell %2d - Found: " %(i+1) + ','.join(found_cell[i]), end = ' === ')
     print("Not Found: " + ','.join(nonot_found))
+  """
+
+###
+### Primary algorithms (run on every pass)
+###
 
   for y in range(16):
     searchRowForSolo(y)
@@ -382,11 +417,17 @@ while loop < 20:
     searchCubeForSolo(cell)
     searchCubeForSingle(cell)
 
-  if changes < 5 and level == 1:
-    level = 2
-    print("Changes = " + str(changes) + " and level = " + str(level))
-    print("Adding in next level of logic")
-  if (level == 2):
+###
+### Secondary algorithms (run only if primary ones are unsuccessful)
+###
+
+  if (changes == 0):
+    print("Changes = " + str(changes) + ".  Primary algorithms unsuccessful.")
+    print("Trying secondary algorithms.")
+
+    ###
+    ### Secondary algorithm for rows
+    ###
     for y in range(16):
       quad_set = [set(), set(), set(), set()]
       for quad in range(4):
@@ -403,6 +444,9 @@ while loop < 20:
       if unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]:
         uniqueQuadRow(y,3,unique_set)
 
+    ###
+    ### Secondary algorithm for columns
+    ###
     for x in range(16):
       quad_set = [set(), set(), set(), set()]
       for quad in range(4):
@@ -419,6 +463,9 @@ while loop < 20:
       if unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]:
         uniqueQuadCol(x,3,unique_set)
 
+    ###
+    ### Secondary algorithm for horizontal clump of each cell
+    ###
     for cell in range(16):
       first_row = (cell // 4) * 4
       first_col = (cell % 4) * 4
@@ -438,6 +485,9 @@ while loop < 20:
       if unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]:
         uniqueQuadCellRow(cell,3,unique_set)
           
+    ###
+    ### Secondary algorithm for vertical clump of each cell
+    ###
     for cell in range(16):
       first_row = (cell // 4) * 4
       first_col = (cell % 4) * 4
@@ -457,13 +507,27 @@ while loop < 20:
       if unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]:
         uniqueQuadCellCol(cell,3,unique_set)
           
+###
+### Tertiary algorithms (run only if secondary ones are unsuccessful)
+### :: Look for combinations of 2 to 4 unfound values 'range(2,5)'
+### :: since tests showed that to be the fastest.  But if this
+### :: program fails to solve a future puzzle, increase the range.
+###
+
+  ###
+  ### Tertiary algorithm for rows
+  ###
+
+  if (changes == 0):
+    print("Changes = " + str(changes) + ".  Secondary algorithms unsuccessful.")
+    print("Trying tertiary algorithms.")
     for y in range(16):
       row_set = [set(),set(),set(),set(),set(),set(),set(),set(
                ),set(),set(),set(),set(),set(),set(),set(),set()]
       for x in range(16):
         row_set[x] = set(Matrix[y][x])
-      not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
-      for size in range(2,8):
+      #not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
+      for size in range(2,5):
         search_list = list(combinations(not_found_row[y],size))
         for search_item in search_list:
           found = 0
@@ -483,13 +547,18 @@ while loop < 20:
                            )+","+str(x+1)+" for row_set: "+str(row_set[x]
                            )+" and search_item: "+str(search_item))
 
+  ###
+  ### Tertiary algorithm for columns
+  ###
+
+  if (changes == 0):
     for x in range(16):
       col_set = [set(),set(),set(),set(),set(),set(),set(),set(
                ),set(),set(),set(),set(),set(),set(),set(),set()]
       for y in range(16):
         col_set[y] = set(Matrix[y][x])
-      not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
-      for size in range(2,8):
+      #not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
+      for size in range(2,5):
         search_list = list(combinations(not_found_col[x],size))
         for search_item in search_list:
           found = 0
@@ -509,6 +578,11 @@ while loop < 20:
                            )+","+str(x+1)+" for col_set: "+str(col_set[y]
                            )+" and search_item: "+str(search_item))
 
+  ###
+  ### Tertiary algorithm for cells
+  ###
+
+  if (changes == 0):
     for cell in range(16):
       cell_set = [set(),set(),set(),set(),set(),set(),set(),set(
                 ),set(),set(),set(),set(),set(),set(),set(),set()]
@@ -518,8 +592,8 @@ while loop < 20:
         for x in range(first_col, first_col+4):
           i = (y % 4) * 4 + (x % 4)
           cell_set[i] = set(Matrix[y][x])
-      not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
-      for size in range(2,8):
+      #not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
+      for size in range(2,5):
         search_list = list(combinations(not_found_cell[cell],size))
         for search_item in search_list:
           found = 0
@@ -541,5 +615,4 @@ while loop < 20:
                            )+","+str(x+1)+" for cell_set: "+str(cell_set[i]
                            )+" and search_item: "+str(search_item))
           
-
   loop += 1
