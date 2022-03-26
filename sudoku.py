@@ -5,6 +5,11 @@ import time
 
 def sampleToughPuzzle():
 
+  ###
+  ### Enter the known values for the puzzle: 1-9, a-g or A-G.
+  ### A blank puzzle is provided for easier data entry.
+  ###
+
 ### Blank puzzle
 ## ----------- || 1 | 2 | 3 | 4|| 5 | 6 | 7 | 8|| 9 |10 |11 |12||13 |14 |15 |16||
 #  puzzle[0]  = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
@@ -59,13 +64,64 @@ def sampleToughPuzzle():
 
 def getMaxColumnWidth():
 
+  ###
+  ### Determine for each column the square with the most numbers left
+  ###
+
   width = [1 for z in range(16)]
   for i in range(16):
     for j in range(16):
       width[i] = max(width[i], len(Matrix[j][i]))
   return width
 
+def uniqueQuadRow(row,x_quad,unique_set):
+
+  ###
+  ### Part of the secondary algorithms.
+  ###
+  ### :: Used to remove any unique values found in a row's set of four
+  ### :: from the three other sets of four of that 4x4 cell.
+  ###
+
+  global changes
+  cell, first_row, first_col = determineCell(row,x_quad*4)
+  for y in range(first_row, first_row+4):
+    if (y != row):
+      for x in range(first_col, first_col+4):
+        for i in unique_set:
+          if i in Matrix[y][x]:
+            Matrix[y][x].remove(i)
+            changes += 1
+            print("QuadRow-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
+            
+def uniqueQuadCol(col,y_quad,unique_set):
+
+  ###
+  ### Part of the secondary algorithms.
+  ###
+  ### :: Used to remove any unique values found in a column's set of four
+  ### :: from the three other sets of four of that 4x4 cell.
+  ###
+
+  global changes
+  cell, first_row, first_col = determineCell(y_quad*4,col)
+  for x in range(first_col, first_col+4):
+    if (x != col):
+      for y in range(first_row, first_row+4):
+        for i in unique_set:
+          if i in Matrix[y][x]:
+            Matrix[y][x].remove(i)
+            changes += 1
+            print("QuadCol-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
+            
 def uniqueQuadCellRow(cell,y_quad,unique_set):
+
+  ###
+  ### Part of the secondary algorithms.
+  ###
+  ### :: Used to remove any unique values found in a cell's horizontal (row)
+  ### :: set of four from the three other sets of four of that quad's row.
+  ###
 
   global changes
   y = (cell // 4) * 4 + y_quad
@@ -81,6 +137,13 @@ def uniqueQuadCellRow(cell,y_quad,unique_set):
 
 def uniqueQuadCellCol(cell,x_quad,unique_set):
 
+  ###
+  ### Part of the secondary algorithms.
+  ###
+  ### :: Used to remove any unique values found in a cell's vertical (column)
+  ### :: set of four from the three other sets of four of that quad's column.
+  ###
+
   global changes
   x = (cell % 4) * 4 + x_quad
   y_quad = cell // 4
@@ -93,33 +156,12 @@ def uniqueQuadCellCol(cell,x_quad,unique_set):
             changes += 1
             print("QuadCellCol-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
 
-def uniqueQuadRow(row,x_quad,unique_set):
-
-  global changes
-  cell, first_row, first_col = determineCell(row,x_quad*4)
-  for y in range(first_row, first_row+4):
-    if (y != row):
-      for x in range(first_col, first_col+4):
-        for i in unique_set:
-          if i in Matrix[y][x]:
-            Matrix[y][x].remove(i)
-            changes += 1
-            print("QuadRow-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
-            
-def uniqueQuadCol(col,y_quad,unique_set):
-
-  global changes
-  cell, first_row, first_col = determineCell(y_quad*4,col)
-  for x in range(first_col, first_col+4):
-    if (x != col):
-      for y in range(first_row, first_row+4):
-        for i in unique_set:
-          if i in Matrix[y][x]:
-            Matrix[y][x].remove(i)
-            changes += 1
-            print("QuadCol-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
-            
 def soloFound(where, y, x, z):
+
+  ###
+  ### Part of primary algorithms.  When a square is found to contain only one
+  ### value, that value is removed from the corresponding row, column and 4x4 cell.
+  ###
 
   if z in "abcdefg":
     if len(z) == 1:
@@ -161,6 +203,11 @@ def checkNotFoundVariables():
 
 def clearRow(y,x,z):
 
+  ###
+  ### Part of primary algorithms.  When a square is found to contain only one
+  ### value, that value is removed from the remaining squares of that row.
+  ###
+
   global changes
   if z not in found_row[y]:
     found_row[y].append(z)
@@ -178,6 +225,11 @@ def clearRow(y,x,z):
 
 def clearCol(y,x,z):
   
+  ###
+  ### Part of primary algorithms.  When a square is found to contain only one
+  ### value, that value is removed from the remaining squares of that column.
+  ###
+
   global changes
   if z not in found_col[x]:
     found_col[x].append(z)
@@ -194,6 +246,11 @@ def clearCol(y,x,z):
       print("clearCol-Removing " +str(z)+" from: "+str(i+1)+","+str(x+1))
 
 def clearCube(y1,x1,z):
+
+  ###
+  ### Part of primary algorithms.  When a square is found to contain only one
+  ### value, that value is removed from the remaining squares of that 4x4 cell.
+  ###
 
   global changes
   cell, first_row, first_col = determineCell(y1,x1)
@@ -216,12 +273,23 @@ def clearCube(y1,x1,z):
 
 def determineCell(y,x):
 
+  ###
+  ### With a given column and row number, determine the corresponding cell id
+  ### along with that cell's first row id and first column id.
+  ###
+
   cell = ((y // 4) * 4) + (x // 4)
   first_row = (cell // 4) * 4
   first_col = (cell % 4) * 4
   return cell, first_row, first_col
 
 def searchRowForSolo(y):
+
+  ###
+  ### Part of primary algorithms.  Check each of the squares in a row for single
+  ### values.  If found, call the 'soloFound' function to remove it from the
+  ### corresponding row, column, and 4x4 cell.
+  ###
 
   for x in range(16):
     if len(Matrix[y][x]) == 1:
@@ -230,12 +298,24 @@ def searchRowForSolo(y):
 
 def searchColForSolo(x):
 
+  ###
+  ### Part of primary algorithms.  Check each of the squares in a column for single
+  ### values.  If found, call the 'soloFound' function to remove it from the
+  ### corresponding row, column, and 4x4 cell.
+  ###
+
   for y in range(16):
     if len(Matrix[y][x]) == 1:
       z = Matrix[y][x][0]
       soloFound("col", y, x, z)
 
 def searchCubeForSolo(cell):
+
+  ###
+  ### Part of primary algorithms.  Check each of the squares in a 4x4 cell for single
+  ### values.  If found, call the 'soloFound' function to remove it from the
+  ### corresponding row, column, and 4x4 cell.
+  ###
 
   first_row = (cell // 4) * 4
   first_col = (cell % 4) * 4
@@ -246,6 +326,12 @@ def searchCubeForSolo(cell):
         soloFound("cell", y, x, z)
 
 def searchRowForSingle(y):
+
+  ###
+  ### Part of primary algorithms.  For each value from 1-9,A-G, see if it only
+  ### appears in one square of a row.  If so, call the 'soloFound' function to
+  ### remove it from the corresponding column and 4x4 cell.
+  ###
 
   full_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
   for z in full_set:
@@ -259,6 +345,12 @@ def searchRowForSingle(y):
 
 def searchColForSingle(x):
 
+  ###
+  ### Part of primary algorithms.  For each value from 1-9,A-G, see if it only
+  ### appears in one square of a column.  If so, call the 'soloFound' function to
+  ### remove it from the corresponding row and 4x4 cell.
+  ###
+
   full_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
   for z in full_set:
     count = 0
@@ -270,6 +362,12 @@ def searchColForSingle(x):
       soloFound("col", y_found, x, z)
       
 def searchCubeForSingle(cell):
+
+  ###
+  ### Part of primary algorithms.  For each value from 1-9,A-G, see if it only
+  ### appears in one square of a 4x4 cell.  If so, call the 'soloFound' function to
+  ### remove it from the corresponding row and column.
+  ###
 
   first_row = (cell // 4) * 4
   first_col = (cell % 4) * 4
@@ -316,11 +414,11 @@ changes = 0
 
 ###
 ### Use either the sample puzzle provided (for debugging) OR the keyboard
-### puzzle input method to enter your puzzle to be solved
+### puzzle input method to enter your puzzle by hand.
 ###
 """
 ###
-### Keyboard puzzle input method (remove and use sample puzzle for debugging)
+### Keyboard puzzle input method (skip and use sample puzzle for debugging)
 ###
 for y in range(16):
   for x in range(16):
@@ -329,10 +427,7 @@ for y in range(16):
       soloFound("INITIALIZATION", y, x, str(value))
 """
 
-###
-### Sample puzzle method (for debugging; remove if input is from keyboard)
-###
-sampleToughPuzzle()
+sampleToughPuzzle() # Sample puzzle (for debugging; skip if input is from keyboard)
 
 start = time.perf_counter()
 loop = 1
@@ -347,9 +442,9 @@ while loop < 40:
   rows_done = 0
   print("Loop #" + str(loop))
 
-###
-### Print puzzle's current state in a simple grid
-###
+  ###
+  ### Print puzzle's current state in a simple grid
+  ###
   
   max_width = getMaxColumnWidth()
   line_length = sum(max_width) * 2 + 38
@@ -369,19 +464,18 @@ while loop < 40:
   print("        " + "-"*line_length)
   print("ROWS DONE: " + str(rows_done))
 
-###
-### Quit program once all rows have been resolved
-###
-  
+  ###
+  ### Quit program once all rows have been resolved
+  ###
   if (rows_done == 16):
     loop = 100
     stop = time.perf_counter()
     print("Elapsed time: " + str(stop - start))
     break
 
-###
-### Sorting and printing resolved squares in each row, column and cell
-###
+  ###
+  ### Sort and print resolved/unresolved squares of each row, column and cell
+  ###
   """
   for i in range(16):
     found_row[i].sort()
@@ -403,9 +497,9 @@ while loop < 40:
     print("Not Found: " + ','.join(nonot_found))
   """
 
-###
-### Primary algorithms (run on every pass)
-###
+  ###
+  ### Primary algorithms (run on every pass)
+  ###
 
   for y in range(16):
     searchRowForSolo(y)
@@ -417,17 +511,21 @@ while loop < 40:
     searchCubeForSolo(cell)
     searchCubeForSingle(cell)
 
-###
-### Secondary algorithms (run only if primary ones are unsuccessful)
-###
+  ###
+  ### Secondary algorithms (run only if primary ones are unsuccessful)
+  ###
 
   if (changes == 0):
     print("Changes = " + str(changes) + ".  Primary algorithms unsuccessful.")
     print("Trying secondary algorithms.")
 
     ###
-    ### Secondary algorithm for rows
+    ### Secondary algorithm for rows.
+    ### :: Used to search for unique values in a row's set of four
+    ### :: from the three other sets of four of that row.
+    ### :: Call 'uniqueQuadRow' if found.
     ###
+
     for y in range(16):
       quad_set = [set(), set(), set(), set()]
       for quad in range(4):
@@ -445,8 +543,12 @@ while loop < 40:
         uniqueQuadRow(y,3,unique_set)
 
     ###
-    ### Secondary algorithm for columns
+    ### Secondary algorithm for columns.
+    ### :: Used to search for unique values in a column's set of four
+    ### :: from the three other sets of four of that column.
+    ### :: Call 'uniqueQuadCol' if found.
     ###
+
     for x in range(16):
       quad_set = [set(), set(), set(), set()]
       for quad in range(4):
@@ -464,8 +566,12 @@ while loop < 40:
         uniqueQuadCol(x,3,unique_set)
 
     ###
-    ### Secondary algorithm for horizontal clump of each cell
+    ### Secondary algorithm for horizontal clump of each cell.
+    ### :: Used to search for unique values in a cell's horizontal clump
+    ### :: of four from the three other clumps of four in that cell.
+    ### :: Call 'uniqueQuadCellRow' if found.
     ###
+
     for cell in range(16):
       first_row = (cell // 4) * 4
       first_col = (cell % 4) * 4
@@ -486,8 +592,12 @@ while loop < 40:
         uniqueQuadCellRow(cell,3,unique_set)
           
     ###
-    ### Secondary algorithm for vertical clump of each cell
+    ### Secondary algorithm for vertical clump of each cell.
+    ### :: Used to search for unique values in a cell's vertical clump
+    ### :: of four from the three other clumps of four in that cell.
+    ### :: Call 'uniqueQuadCellCol' if found.
     ###
+
     for cell in range(16):
       first_row = (cell // 4) * 4
       first_col = (cell % 4) * 4
@@ -507,12 +617,16 @@ while loop < 40:
       if unique_set := quad_set[3] - quad_set[0] - quad_set[1] - quad_set[2]:
         uniqueQuadCellCol(cell,3,unique_set)
           
-###
-### Tertiary algorithms (run only if secondary ones are unsuccessful)
-### :: Look for combinations of 2 to 4 unfound values 'range(2,5)'
-### :: since tests showed that to be the fastest.  But if this
-### :: program fails to solve a future puzzle, increase the range.
-###
+  ###
+  ### Tertiary algorithms (run only if secondary ones are unsuccessful)
+  ### :: Look for combinations of 2 to 4 unfound values in a similar number
+  ### :: of squares.  For example, if while searching for (3,4,8,C) you find
+  ### :: [3,4,C], [4,8,C], [3,4,8,C] and [4,C], then that set of 4 is
+  ### :: limited to those 4 squares, and any occurrence of those numbers
+  ### :: elsewhere in that search grid (row, column or cell) can be removed.
+  ### :: This uses 'range(2,5)' since tests showed that to be the fastest.
+  ### :: If this program fails to solve a future puzzle, increase the range.
+  ###
 
   ###
   ### Tertiary algorithm for rows
