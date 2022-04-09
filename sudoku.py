@@ -173,34 +173,6 @@ def soloFound(where, y, x, z):
     clearCol(y,x,z)
     clearCube(y,x,z)
 
-def checkNotFoundVariables():
-
-  global changes
-  not_found_row = [[] for i in range(16)]
-  not_found_col = [[] for i in range(16)]
-  not_found_cell = [[] for i in range(16)]
-  alpha_set = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G']
-  for alpha in alpha_set:
-    for i in range(16):
-      not_found_row[i].append(alpha)
-      not_found_col[i].append(alpha)
-      not_found_cell[i].append(alpha)
-  for y in range(16):
-    for x in range(16):
-      if (len(Matrix[y][x]) == 1):
-        z = Matrix[y][x][0]
-        cell = ((y // 4) * 4) + (x // 4)
-        if z in not_found_row[y]:
-          not_found_row[y].remove(z)
-          changes += 1
-        if z in not_found_col[x]:
-          not_found_col[x].remove(z)
-          changes += 1
-        if z in not_found_cell[cell]:
-          not_found_cell[cell].remove(z)
-          changes += 1
-  return not_found_row, not_found_col, not_found_cell
-
 def clearRow(y,x,z):
 
   ###
@@ -640,7 +612,6 @@ while loop < 40:
                ),set(),set(),set(),set(),set(),set(),set(),set()]
       for x in range(16):
         row_set[x] = set(Matrix[y][x])
-      #not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
       for size in range(2,5):
         search_list = list(combinations(not_found_row[y],size))
         for search_item in search_list:
@@ -671,7 +642,6 @@ while loop < 40:
                ),set(),set(),set(),set(),set(),set(),set(),set()]
       for y in range(16):
         col_set[y] = set(Matrix[y][x])
-      #not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
       for size in range(2,5):
         search_list = list(combinations(not_found_col[x],size))
         for search_item in search_list:
@@ -706,7 +676,6 @@ while loop < 40:
         for x in range(first_col, first_col+4):
           i = (y % 4) * 4 + (x % 4)
           cell_set[i] = set(Matrix[y][x])
-      #not_found_row, not_found_col, not_found_cell = checkNotFoundVariables()
       for size in range(2,5):
         search_list = list(combinations(not_found_cell[cell],size))
         for search_item in search_list:
