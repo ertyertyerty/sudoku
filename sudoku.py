@@ -60,7 +60,7 @@ def sampleToughPuzzle():
   for i in range(16):
     for j in range(16):
       if puzzle[i][j] in "123456789aAbBcCdDeEfFgG":
-        soloFound("Sample Puzzle", i, j, str(puzzle[i][j]))
+        soloFound(i, j, str(puzzle[i][j]))
 
 def getMaxColumnWidth():
 
@@ -156,7 +156,7 @@ def uniqueQuadCellCol(cell,x_quad,unique_set):
             changes += 1
             print("QuadCellCol-Removing " +str(i)+" from: "+str(y+1)+","+str(x+1))
 
-def soloFound(where, y, x, z):
+def soloFound(y, x, z):
 
   ###
   ### Part of primary algorithms.  When a square is found to contain only one
@@ -266,7 +266,7 @@ def searchRowForSolo(y):
   for x in range(16):
     if len(Matrix[y][x]) == 1:
       z = Matrix[y][x][0]
-      soloFound("row", y, x, z)
+      soloFound(y, x, z)
 
 def searchColForSolo(x):
 
@@ -279,7 +279,7 @@ def searchColForSolo(x):
   for y in range(16):
     if len(Matrix[y][x]) == 1:
       z = Matrix[y][x][0]
-      soloFound("col", y, x, z)
+      soloFound(y, x, z)
 
 def searchCubeForSolo(cell):
 
@@ -295,7 +295,7 @@ def searchCubeForSolo(cell):
     for x in range(first_col, first_col+4):
       if len(Matrix[y][x]) == 1:
         z = Matrix[y][x][0]
-        soloFound("cell", y, x, z)
+        soloFound(y, x, z)
 
 def searchRowForSingle(y):
 
@@ -313,7 +313,7 @@ def searchRowForSingle(y):
         count += 1
         x_found = x
     if count == 1:
-      soloFound("row", y, x_found, z)
+      soloFound(y, x_found, z)
 
 def searchColForSingle(x):
 
@@ -331,7 +331,7 @@ def searchColForSingle(x):
         count += 1
         y_found = y
     if count == 1:
-      soloFound("col", y_found, x, z)
+      soloFound(y_found, x, z)
       
 def searchCubeForSingle(cell):
 
@@ -353,7 +353,7 @@ def searchCubeForSingle(cell):
           y_found = y
           x_found = x
     if count == 1:
-      soloFound("cell", y_found, x_found, z)
+      soloFound(y_found, x_found, z)
 
 ###
 ### START OF MAIN PROGRAM
@@ -396,7 +396,7 @@ for y in range(16):
   for x in range(16):
     value = str(input("Value (1-9, a-g or A-G) for " + str(y+1) + "," + str(x+1) + ": "))
     if value in "123456789aAbBcCdDeEfFgG":
-      soloFound("INITIALIZATION", y, x, str(value))
+      soloFound(y, x, str(value))
 """
 
 sampleToughPuzzle() # Sample puzzle (for debugging; skip if input is from keyboard)
